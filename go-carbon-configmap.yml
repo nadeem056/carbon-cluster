@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: go-carbon-config
+  namespace: carbon-cluster
+data:
+  carbon.conf: |
+    [common]
+    user = "carbon"
+    log-level = "info"
+    ...

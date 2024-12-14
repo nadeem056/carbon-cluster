@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carbonapi
+  namespace: carbon-cluster
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: carbonapi
+  template:
+    metadata:
+      labels:
+        app: carbonapi
+    spec:
+      containers:
+      - name: carbonapi
+        image: go-graphite/carbonapi:latest
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/carbonapi
+          subPath: carbonapi.yaml
+      volumes:
+      - name: config-volume
+        configMap:
+          name: carbonapi-config
