@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-carbon
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-carbon
+  template:
+    metadata:
+      labels:
+        app: go-carbon
+    spec:
+      containers:
+      - name: go-carbon
+        image: mnadeempml/carbon:latest
+        stdin: true
+        tty: true
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/go-carbon
+        - name: data-volume
+          mountPath: /data/go-carbon
+      volumes:
+      - name: config-volume
+        configMap:
+          name: go-carbon-config
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: go-carbon-pvc
